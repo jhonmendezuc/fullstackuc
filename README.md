@@ -1,2 +1,10 @@
 # fullstackuc
 Ejemplos del curso de FULLSTACK
+
+- MODULO 1 - GIT 
+- MODULO 2 - JS
+- MODULO 3 - BASES DE DATOS
+- MODULO 4 - NODEJS
+- MODULO 5 - FRONTEND
+- MODULO 6 - PRUEBAS
+
