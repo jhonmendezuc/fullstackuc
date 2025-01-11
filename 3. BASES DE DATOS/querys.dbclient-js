@@ -1,0 +1,112 @@
+// Active: 1736546439599@@127.0.0.1@27017@libreria
+
+db("libreria").collection("cliente").find({});
+
+db("libreria")
+  .collection("cliente")
+  .insertOne({
+    nombre: "juan",
+    apellido: "perez",
+    edad: 30,
+    direccion: {
+      calle: "calle falsa",
+      numero: 123,
+      ciudad: "ciudad falsa",
+      pais: "pais falso",
+    },
+  });
+
+db("libreria")
+  .collection("cliente")
+  .insertOne({
+    nombre: "jose",
+    apellido: "lara",
+    edad: 52,
+    direccion: {
+      calle: "calle falsa",
+      numero: 123,
+      ciudad: "bogota",
+      pais: "colombia",
+    },
+  });
+
+//actualizar
+
+db("libreria")
+  .collection("cliente")
+  .updateOne({ nombre: "juan" }, { $set: { "direccion.numero": 7767003 } });
+
+db("libreria")
+  .collection("cliente")
+  .insertMany([
+    {
+      nombre: "maria",
+      apellido: "lopez",
+      intereses: ["Ejercicio", "lectura", "programación"],
+    },
+    {
+      nombre: "gabriel",
+      apellido: "ramirez",
+      intereses: ["Correr", "lectura", "Yoga"],
+    },
+  ]);
+
+db("libreria")
+  .collection("cliente")
+  .updateOne({ nombre: "gabriel" }, { $push: { intereses: "futbol" } });
+
+db("libreria")
+  .collection("cliente")
+  .updateOne(
+    { nombre: "gabriel" },
+    {
+      $push: {
+        intereses: { $each: ["ajedres", "tenis"] },
+      },
+    }
+  );
+
+db.ventas.aggregate([
+  { $match: { categoria: { $in: ["tecnologia", "hogar"] } } },
+  { $group: { _id: "$categoria", total_ventas: { $sum: "$monto" } } },
+  { $sort: { total_ventas: -1 } },
+]);
+
+db.productos.aggregate([
+  { $match: { stock: { $gt: 0 } } },
+  { $count: "total_productos" },
+]);
+
+// "join" -- lookup
+// consultasr los detalles de cada una de las ordenes de los productos
+
+db.ordenes.aggregate([
+  {
+    $lookup: {
+      from: "productos",
+      localField: "productos.nombre",
+      foreignField: "nombre",
+      as: "detalle_producto",
+    },
+  },
+]);
+
+// consultar las ordenes con las ventas realizadas
+db.ordenes.aggregate([
+  {
+    $lookup: {
+      from: "productos",
+      localField: "productos.nombre",
+      foreignField: "nombre",
+      as: "detalles_productos",
+    },
+  },
+  {
+    $lookup: {
+      from: "ventas",
+      localField: "cliente",
+      foreignField: "cliente",
+      as: "detalles_ventas",
+    },
+  },
+]);
