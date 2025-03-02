@@ -3,10 +3,20 @@ import libroRutas from "./rutas/v1/libroRutas.js";
 import autorRutas from "./rutas/v1/autorRutas.js";
 import usuarioRutas from "./rutas/v1/usuarioRutas.js";
 import dotenv from "dotenv";
+import cors from "cors";
 
 dotenv.config();
 
 const app = express();
+
+app.use(
+  cors({
+    origin: "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 //midleware
 app.use(json());
