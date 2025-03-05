@@ -3,7 +3,7 @@ import libroControlador from "../../controladores/libroControlador.js";
 import validarToken from "../../midleware/validarToken.js";
 const router = new Router();
 
-router.use(validarToken.validarToken);
+//router.use(validarToken.validarToken);
 
 router
   .get("/", libroControlador.obtenerLibros)
